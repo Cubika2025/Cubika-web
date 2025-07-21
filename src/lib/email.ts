@@ -1,13 +1,13 @@
 import { Resend } from 'resend';
 
-// Inicializar Resend con la API key
-const resendApiKey = process.env.RESEND_API_KEY;
+export function getResendClient() {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    throw new Error('RESEND_API_KEY no está configurada.');
+  }
 
-if (!resendApiKey) {
-  throw new Error('RESEND_API_KEY no está configurada. El envío de correos no puede continuar.');
+  return new Resend(resendApiKey);
 }
-
-const resend = new Resend(resendApiKey);
 
 // Configurar el correo de contacto
 const contactEmail = 'servicioalcliente@grupocubika.com'; // Dirección fija para asegurar que siempre se use esta
@@ -26,6 +26,7 @@ interface EmailData {
 }
 
 export async function sendContactEmail(data: EmailData) {
+    const resend = getResendClient();
     const subject = `Nuevo mensaje de contacto: ${data.type}`;
     
     let emailContent = `
