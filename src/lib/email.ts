@@ -1,10 +1,12 @@
 import { Resend } from 'resend';
 
 // Inicializar Resend con la API key
-const resendApiKey = process.env.RESEND_API_KEY || '';
+const resendApiKey = process.env.RESEND_API_KEY;
+
 if (!resendApiKey) {
-  console.error('ADVERTENCIA: RESEND_API_KEY no está configurada. Los correos no se enviarán correctamente.');
+  throw new Error('RESEND_API_KEY no está configurada. El envío de correos no puede continuar.');
 }
+
 const resend = new Resend(resendApiKey);
 
 // Configurar el correo de contacto
